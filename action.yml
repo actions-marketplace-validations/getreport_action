@@ -1,0 +1,51 @@
+name: getReport website checkup
+description: Run a free getReport checkup on a URL and fail the job when a score drops below your threshold.
+author: getReport
+branding:
+  icon: activity
+  color: blue
+inputs:
+  url:
+    description: The page to check, e.g. https://example.com/ or a preview deployment URL.
+    required: true
+  api-key:
+    description: Your getReport API key (free at https://getreport.app/api). Store it as a secret.
+    required: true
+  min-score:
+    description: Fail when the overall score is below this (0–100). 0 never fails.
+    required: false
+    default: '0'
+  thresholds:
+    description: 'Per-module minimums, comma-separated, e.g. "speed=80,seo=90,security=70". Modules: speed, seo, security, a11y, schema, social, practices.'
+    required: false
+    default: ''
+  device:
+    description: mobile or desktop.
+    required: false
+    default: mobile
+  fresh:
+    description: Run a new check instead of reusing one from the last 12 hours.
+    required: false
+    default: 'true'
+  timeout-minutes:
+    description: Give up waiting after this many minutes.
+    required: false
+    default: '8'
+  api-url:
+    description: The getReport API origin.
+    required: false
+    default: https://api.getreport.app
+outputs:
+  report-url:
+    description: The public report page.
+  report-id:
+    description: The report id.
+  overall:
+    description: The overall score (0–100), empty when there is none.
+  grade:
+    description: The letter grade (A–F).
+  scores:
+    description: Every module score as JSON.
+runs:
+  using: node20
+  main: index.mjs
